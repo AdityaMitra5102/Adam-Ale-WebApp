@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ 
+  <title>Adam's Ale</title>
+ 
+</head>
+
+<body>
+<h1>
+  Adam's Ale
+</h1>
+<p>
+Natual calamities can't be prevented but...their IMPACT can be MITIGATED.
+</p>
+
+<h2>This webpage is only for legacy devices</h2>
+<p>
+  <a onclick="getLocation()" href="#getlocation">Find Water</a>
+
+</p>
+  <script>
+      
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else { 
+        console.log("Geolocation is not supported by this browser.");
+      }
+    }
+    
+    function showPosition(position) {
+      console.log("Latitude: " + position.coords.latitude + 
+      "<br>Longitude: " + position.coords.longitude);
+      var url="https://adamsalebackend.azurewebsites.net/api/request?func=get&lat="+position.coords.latitude+"&lon="+position.coords.longitude;
+      console.log(url);
+      httpGet(url);
+     
+      
+    }
+
+    function httpGet(theUrl)
+    {
+     
+       var s=fetch(theUrl)
+    .then(response => response.text())
+    .then(json =>{console.log(json);
+    changeMap(json);
+    });
+   
+    }
+
+    function changeMap(json)
+    {
+      var lnk="https://google.com/maps?q="+json;
+      window.location.href = lnk;
+    }
+    </script>
+</body>
+</html>
